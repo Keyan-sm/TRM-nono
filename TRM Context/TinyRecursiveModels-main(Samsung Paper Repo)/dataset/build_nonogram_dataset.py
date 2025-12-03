@@ -109,7 +109,7 @@ def build_dataset(input_dir, output_dir, subset_name='train', limit=None):
         "seq_len": int(seq_len),
         "num_puzzle_identifiers": 1,
         "total_groups": 1,
-        "mean_puzzle_examples": 1.0, # Not sure what this is, maybe for weighting?
+        "mean_puzzle_examples": float(total_samples), # Average examples per group (since 1 group, it's total_samples)
         "total_puzzles": int(total_samples),
         "sets": [subset_name]
     }

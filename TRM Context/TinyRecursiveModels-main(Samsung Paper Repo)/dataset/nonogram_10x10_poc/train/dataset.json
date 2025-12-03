@@ -6,8 +6,8 @@
     "seq_len": 200,
     "num_puzzle_identifiers": 1,
     "total_groups": 1,
-    "mean_puzzle_examples": 361094.0,
-    "total_puzzles": 361094,
+    "mean_puzzle_examples": 36000.0,
+    "total_puzzles": 36000,
     "sets": [
         "train"
     ]

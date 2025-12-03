@@ -8,3 +8,18 @@
         - IE if gem3 is 90% acc on 10x10 boards, then we know we need to beat that or go to 15x15 board 
 	3.	Based on Gemini’s performance, determine how the TRM architecture for this task should differ (if at all) from:
 	    - The published architectures in the Samsung paper
+
+1. prev attempt at training TRM on this dataset failed.  
+([Rank 0, World Size 1]: Epoch 49
+TRAIN
+EVALUATE
+SWITCH TO EMA
+Skipping evaluation (no eval loader)
+SAVE CHECKPOINT
+0it [05:11, ?it/s]
+keyanmikaili@Keyans-Mac-mini TinyRecursiveModels-main(Samsung Paper Repo) %)
+
+2. Use the @10x10 dataset to train a proof of concept TRM model. 
+    - proof of concept means we don't need to get to 100% accuracy, we just need to show that it can learn something; train on a small portion of the entire dataset (10%?)
+    - Use the same architecture and methodology as the published Samsung paper
+    - Note the format of the @10x10 dataset 
