@@ -1,0 +1,10 @@
+*.npz
+__pycache__/
+*.pyc
+.DS_Store
+*.rar
+*.zip
+*.npy
+wandb/
+node_modules/
+.env

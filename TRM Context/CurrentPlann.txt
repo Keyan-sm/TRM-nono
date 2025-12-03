@@ -1,0 +1,10 @@
+	1.	Understand the training dataset thoroughly in @NonoDataset-main. This is confusing, it is split into many files. . 
+
+	2.	Test Gemini 3 performance on the training dataset 
+        - look at gem3 on 10x10 then 15x15 boards
+        - This may be incomplete/anicdotal test just to see where we are at
+        - We can poss hold off on full test acuracy of gem3 and opus 4.5 until later
+        - just need to know the baseline so we can understand how to think abt training TRM on this set 
+        - IE if gem3 is 90% acc on 10x10 boards, then we know we need to beat that or go to 15x15 board 
+	3.	Based on Gemini’s performance, determine how the TRM architecture for this task should differ (if at all) from:
+	    - The published architectures in the Samsung paper
