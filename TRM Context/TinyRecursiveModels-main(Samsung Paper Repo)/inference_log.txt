@@ -1,0 +1,94 @@
+Using device: mps
+Using device: mps
+Loading dataset from: dataset/nonogram_10x10_poc/train
+Loaded metadata: {'pad_id': 0, 'ignore_label_id': -100, 'blank_identifier_id': 0, 'vocab_size': 32, 'seq_len': 200, 'num_puzzle_identifiers': 1, 'total_groups': 1, 'mean_puzzle_examples': 36000.0, 'total_puzzles': 36000, 'sets': ['train']}
+Loading checkpoint from /Users/keyanmikaili/Downloads/TRMProj/TRM Context/TinyRecursiveModels-main(Samsung Paper Repo)/checkpoints/Nonogram_10x10_poc-ACT-torch/TinyRecursiveReasoningModel_ACTV1 nondescript-flounder/step_1126
+Model device: mps:0
+H_init device: mps:0
+carry.z_H device: mps:0
+carry.halted device: mps:0
+
+--- DEBUG INFO ---
+Input Grid Sample (first 20): [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]
+Logits Sample (first 20): 
+[[nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]
+ [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+  nan nan nan nan nan nan nan nan nan nan nan nan nan nan]]
+Preds Sample (first 20): [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+Logits Mean: nan
+Logits Std: nan
+z_H Mean: nan
+z_H Std: nan
+------------------
+
+Seq Len: 200
+Inputs shape: (200,)
+Targets shape: (200,)
+Preds shape: (200,)
+Preds stats - Min: 0, Max: 0, Mean: 0.0
+Targets stats - Min: -100, Max: 1, Mean: -49.665
+
+--- Inference Result ---
+
+Target Grid:
+■ ■ ■ ■ ■ ■ ■ ■ ■ ■
+■ ■ ■ ■ ■ ■ ■ ■ ■ ■
+■ ■ ■ ■ □ □ ■ ■ ■ ■
+■ ■ ■ □ □ □ ■ □ ■ ■
+■ ■ □ □ □ □ ■ □ □ ■
+■ ■ □ ■ □ □ □ ■ □ ■
+■ ■ □ □ ■ □ □ ■ □ ■
+■ ■ ■ □ □ □ ■ ■ ■ ■
+■ □ □ □ □ □ ■ ■ ■ ■
+■ □ ■ ■ □ □ ■ ■ ■ ■
+
+Predicted Grid:
+□ □ □ □ □ □ □ □ □ □
+□ □ □ □ □ □ □ □ □ □
+□ □ □ □ □ □ □ □ □ □
+□ □ □ □ □ □ □ □ □ □
+□ □ □ □ □ □ □ □ □ □
+□ □ □ □ □ □ □ □ □ □
+□ □ □ □ □ □ □ □ □ □
+□ □ □ □ □ □ □ □ □ □
+□ □ □ □ □ □ □ □ □ □
+□ □ □ □ □ □ □ □ □ □
+
+Grid Accuracy: 33.00%

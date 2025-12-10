@@ -1,0 +1,66 @@
+# Nonogram 15x15 PoC training config
+
+defaults:
+  - arch: trm
+  - _self_
+
+hydra:
+  output_subdir: null
+
+# Data path
+data_paths: ['dataset/nonogram_15x15_poc']
+data_paths_test: []
+
+evaluators: []
+
+# Names
+project_name: "TRM-15x15-PoC"
+
+# Hyperparams - Training (Samsung paper baseline)
+global_batch_size: 64  # Samsung uses 64 for nonograms, 768 for ARC tasks
+
+epochs: 10  # PoC: quick training
+eval_interval: 1  # Validate every epoch for better monitoring
+checkpoint_every_eval: True
+
+lr: 1e-4  # Samsung paper default for puzzle tasks
+lr_min_ratio: 0.1
+lr_warmup_steps: 500
+
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1  # Samsung paper default
+puzzle_emb_weight_decay: 0.1
+
+puzzle_emb_lr: 1e-3
+
+seed: 42
+min_eval_interval: 0
+
+ema: True  # Samsung uses EMA
+ema_rate: 0.999
+freeze_weights: False
+
+# Architecture (Samsung paper)
+arch:
+  hidden_size: 512  # Samsung default
+  num_heads: 8      # Samsung default
+  expansion: 4
+  puzzle_emb_ndim: 0  # Disable for PoC (like 10x10 success)
+  puzzle_emb_len: 0
+  
+  # Recursion depth (Samsung)
+  H_cycles: 3
+  L_cycles: 4
+  L_layers: 2
+  
+  # MODIFICATION: Use float32 instead of bfloat16
+  # Justification: Previous 10x10 PoC succeeded with float32;
+  # bfloat16 caused NaN issues on non-H100 hardware
+  forward_dtype: "float32"
+  
+  loss:
+    # MODIFICATION: Use softmax instead of stablemax
+    # Justification: Previous 10x10 PoC succeeded with softmax_cross_entropy;
+    # simpler and more stable for PoC demonstration
+    loss_type: softmax_cross_entropy

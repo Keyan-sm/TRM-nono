@@ -312,8 +312,8 @@ def train_batch(config: PretrainConfig, train_state: TrainState, batch: Any, glo
     # To device
     batch = {k: v.to(DEVICE) for k, v in batch.items()}
 
-    # Init carry if it is None
-    if train_state.carry is None:
+    # Init carry if it is None or batch size changed
+    if train_state.carry is None or train_state.carry.steps.shape[0] != batch['inputs'].shape[0]:
         with torch.device(DEVICE):
             train_state.carry = train_state.model.initial_carry(batch)  # type: ignore
 

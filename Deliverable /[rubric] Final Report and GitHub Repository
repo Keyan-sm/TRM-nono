@@ -1,0 +1,11 @@
+Evaluation Scheme
+
+1. Technical Quality (200 points): This section evaluates the rigor, correctness, and thoroughness of the technical components of the project. Code will be evaluated in this section.
+i. Implementation Correctness (60 points): Were the ML models implemented properly? Were appropriate algorithms used, and were there any technical errors or mismatches?
+ii. Model Evaluation Depth (70 points): Did the team evaluate their models using suitable metrics (e.g., accuracy, F1, AUC)? Were comparisons, baselines, or ablation analyses included?
+iii. Dataset and Preprocessing (60 points): Was the dataset appropriate for the problem? Were preprocessing steps (cleaning, normalization, splitting, feature engineering) well thought out and justified?
+
+2. Innovation and Insights (100 points): This section rewards creativity and thoughtful reflection.
+i. Idea Originality (10 points): Was the problem or approach creative or non-trivial? Did the group go beyond replicating standard examples?
+ii. Result Interpretation (15 points): Did the team reflect meaningfully on their results, identify strengths and limitations, and offer insights or future directions?
+

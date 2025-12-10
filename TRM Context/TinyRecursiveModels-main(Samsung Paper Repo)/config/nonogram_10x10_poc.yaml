@@ -16,7 +16,7 @@ evaluators: []
 # Hyperparams - Training
 global_batch_size: 64 # Adjust based on memory
 
-epochs: 50
+epochs: 3
 eval_interval: 1
 checkpoint_every_eval: True
 
@@ -50,3 +50,5 @@ arch:
   H_cycles: 3
   L_cycles: 4
   L_layers: 2
+  
+  forward_dtype: float32

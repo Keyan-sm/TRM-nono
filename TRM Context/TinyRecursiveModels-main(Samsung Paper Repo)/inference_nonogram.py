@@ -7,7 +7,7 @@ from dataset.simple_nonogram_dataset import SimpleNonogramDataset
 from pretrain import create_model
 from models.layers import CastedLinear
 
-@hydra.main(config_path="config", config_name="nonogram_10x10", version_base="1.2")
+@hydra.main(config_path="config", config_name="nonogram_10x10_poc", version_base="1.2")
 def main(config):
     # Setup device
     if torch.backends.mps.is_available():
@@ -65,7 +65,7 @@ def main(config):
     model.eval()
 
     # Load Checkpoint
-    checkpoint_path = os.path.join(os.getcwd(), "checkpoints", "Nonogram_10x10-ACT-torch", "TinyRecursiveReasoningModel_ACTV1 khaki-mammoth", "step_124146")
+    checkpoint_path = os.path.join(os.getcwd(), "checkpoints", "Nonogram_10x10_poc-ACT-torch", "TinyRecursiveReasoningModel_ACTV1 nondescript-flounder", "step_1126")
     if os.path.exists(checkpoint_path):
         print(f"Loading checkpoint from {checkpoint_path}")
         checkpoint = torch.load(checkpoint_path, map_location=device)
@@ -128,6 +128,29 @@ def main(config):
             batch=batch,
             return_keys=["logits", "preds"]
         )
+        
+        print("\n--- DEBUG INFO ---")
+        # Print Input Grid (first 20)
+        input_grid_sample = inputs[0, 100:120].cpu().numpy()
+        print(f"Input Grid Sample (first 20): {input_grid_sample}")
+        
+        # Print Logits (first 20)
+        logits = outputs["logits"][0, 100:120].float().cpu().numpy()
+        print(f"Logits Sample (first 20): \n{logits}")
+        
+        # Print Preds (first 20)
+        preds_sample = outputs["preds"][0, 100:120].cpu().numpy()
+        print(f"Preds Sample (first 20): {preds_sample}")
+        
+        # Check if logits are identical
+        print(f"Logits Mean: {outputs['logits'].float().mean()}")
+        print(f"Logits Std: {outputs['logits'].float().std()}")
+        
+        # Check carry z_H stats
+        z_H = new_carry.inner_carry.z_H
+        print(f"z_H Mean: {z_H.float().mean()}")
+        print(f"z_H Std: {z_H.float().std()}")
+        print("------------------\n")
 
     # Visualize
     preds = outputs["preds"].cpu().numpy()[0]

@@ -1,0 +1,56 @@
+# Nonogram 10x10 Full training config
+
+defaults:
+  - arch: trm
+  - _self_
+
+hydra:
+  output_subdir: null
+
+# Data path
+data_paths: ['dataset/nonogram_10x10_full']
+data_paths_test: []
+
+evaluators: []
+
+# Hyperparams - Training
+global_batch_size: 64 # Adjust based on memory
+
+epochs: 50
+eval_interval: 1
+checkpoint_every_eval: True
+
+lr: 1e-4
+lr_min_ratio: 0.1
+lr_warmup_steps: 100
+
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+puzzle_emb_weight_decay: 0.1
+
+puzzle_emb_lr: 1e-3
+
+seed: 42
+min_eval_interval: 0
+
+ema: True
+ema_rate: 0.999
+freeze_weights: False
+
+# Architecture overrides
+arch:
+  hidden_size: 256
+  num_heads: 4
+  expansion: 4
+  puzzle_emb_ndim: 0 # Disable puzzle embeddings for now as we treat each sample independently
+  puzzle_emb_len: 0
+  
+  # Recursion depth
+  H_cycles: 3
+  L_cycles: 4
+  L_layers: 2
+  
+  forward_dtype: float32
+  loss:
+    loss_type: softmax_cross_entropy

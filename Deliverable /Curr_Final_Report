@@ -1,0 +1,124 @@
+Tiny Recursive Model vs Frontier Models on Nonogram Puzzles
+By Samik Bhinge, Keyan Mikaili, and Andre Keyser
+Introduction:
+The goal of this project was to test how a smaller, efficiently trained model, such as a Tiny Recursive Model (TRM) would perform against a frontier model on deterministic logic puzzles. While previous attempts at testing the efficiency of the TRM used sudoku puzzles, this project used nonograms to evaluate the efficiency. Nonograms (also known as Picross or Griddlers) are logic puzzles requiring constraint satisfaction to determine which cells in a grid should be filled based on numeric clues. Classical algorithms using line-solving heuristics and backtracking achieve near-perfect accuracy and solve puzzles in seconds. However, recently, Tiny Recursive Models (TRMs) have demonstrated that small neural networks (7M parameters) using recursive reasoning can achieve competitive performance on structured reasoning tasks like ARC-AGI and Sudoku with significantly fewer parameters than large language models.
+Because of these previous results, we wanted to further research how the TRM would perform against frontier models on nonograms. Using a nonogram dataset compiled by the researchers in the paper Solving nonograms using Neural Networks (Baudés Rubio et al., Jan. 2025), we trained our TRM and evaluated it against Gemini 3. Our results show that our narrowly trained TRM outperformed generalized SOTA models with 50-70x faster inference and better accuracy, beating Gemini 3 by 9% on 10x10 nonograms. This shows that using a recursive reasoning model like TRM has benefits over a generalized model on specific problems, and the model architecture could be further applied to other problems.
+[Image Description: Figure 1]
+An image of a 10x10 nonogram puzzle grid titled "Nonogram Sample 1".
+Top Clues (Vertical): Columns have numbers such as "2", "4", "1 3", "2 4", "2 4", "1 3", and "2".
+Side Clues (Horizontal): Rows have numbers such as "2", "2 1", "2 2", "1", "7", "7", "4", and "2".
+Grid State: The grid is partially filled. The cells corresponding to the clues create a specific black-and-white pixelated shape.
+Figure 1: Example nonogram from the dataset
+Problem Description:
+This project conducts a systematic comparison between a specialized Tiny Recursive Model (TRM) and frontier Large Language Models (LLMs) on a standardized nonogram benchmark. The primary research question was: To what extent does learned recursive reasoning in a small, specialized model compare to the generalized reasoning capabilities of massive frontier models (like Gemini 3) on logic puzzles?
+This study addresses this question by implementing a TRM architecture following the approach from "Less is More: Recursive Reasoning with Tiny Networks" (Jolicoeur-Martineau, 2025) and comparing its performance, efficiency, and failure modes against established classical solvers. The core challenge was to evaluate if neural approaches can replicate the precision of classical solvers while offering distinct advantages in noisy environments or transfer learning contexts.
+Given how novel the TRM architecture is, there is much to be discovered with regards to how effective the architecture is and in what scenarios it is most advantageous over other models, particularly LLMs. LLMs have become a staple of the ever-growing world of AI, as they are used by an increasing number of people for an incredibly wide range of tasks every day. LLM integration has become commonplace in a variety of software products, from messaging apps to programming IDEs. Yet, as they become increasingly prevalent in our rapidly evolving world, the question of whether or not such a complex architecture is the best solution to every problem has been brought up.
+Exploring effective methods to complete certain tasks that do not require such a high level of complexity is a challenge that will become increasingly important as we try to find solutions to the problem of reducing energy consumption. Our analysis of the TRM can provide valuable insight into one of these potential solutions. Through comparisons of the effectiveness and efficiency of the TRM and Gemini 3 as a means of solving nonogram puzzles, we uncovered the incredible potential of the Tiny Recursive Model.
+Methodology:
+Dataset Preparation:
+We used the nonogram dataset compiled by the researchers in the paper Solving nonograms using Neural Networks (Baudés Rubio et al., Jan. 2025). The dataset contained about 360,000 10x10 nonograms and about 660,000 15x15 nonograms in the training set. In their research, they generated the dataset by performing various transformations on icons to map the location of each dark square in the nonogram. We had to modify the model architecture from the Samsung paper to fit our dataset. The modifications we did included changing the global batch size from 768 to 64, adding gradient clipping, and having a fixed sequence length. Since the Samsung model was evaluated on ARC-AGI, the input to the model was different sequence lengths, we had to change it to work with our fixed nonogram input.
+The format of the nonogram input is shown below.
+[Image Description: Terminal/Code Output]
+A screenshot showing the raw text representation of the dataset.
+code
+Text
+=== Sample 0 raw sequences ===
+
+Clues (100 tokens):
+0 0 0 0 10 0 0 0 0 10 0 0 0 4 4 0 0 3 1 2 0 0 2 1 1 0 2 1 1 1 0 2 1 1 1 0 0 0 3 4 0 0 0 1 4 0 0 1 2 4 ...
+
+Grid (100 tokens, flat 10x10 row-major):
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 1 1 1 1 1 1 1 0 0 0 1 0 1 1 1 1 0 0 0 0 1 0 0 1 1 1 0 ...
+
+Grid as 100-char string:
+######################..######....#.####....#..###.#..#.###..#..####....#####..##..####
+
+Grid formatted 10x10:
+##########
+##########
+####..####
+###...#.##
+##....#..#
+##.#..#.#
+##..#..#
+###...####
+#....####
+#.##..####
+
+Row clues (10 rows x up to 5 numbers, 0 means empty slot):
+0 [0, 0, 0, 0, 10]
+1 [0, 0, 0, 0, 10]
+2 [0, 0, 0, 4, 4]
+... [sequence continues]
+
+Column clues (10 cols x up to 5 numbers, 0 means empty slot):
+0 [0, 0, 0, 0, 10]
+1 [0, 0, 0, 0, 8]
+... [sequence continues]
+Figure 1: Sample input from nonogram dataset
+By using a dataset from a previous research paper that evaluated the performance of a model on solving nonograms, we are certain that the data we are training our model on is trustworthy. Lastly, the dataset was already split into test and training sets, which made it easy to train our model.
+
+**Preprocessing and Data Validation:**
+To ensure data quality before training, we implemented a strict validation pipeline (`check_dtype.py`, `inspect_data.py`). We verified that all input sequences matched the required shape `(64, 465)`, fell within the valid vocabulary range `[0, 15]`, and contained no NaN or infinite values. This preprocessing step was crucial to rule out data corruption as a cause for early training instability.
+Model Architecture:
+A TRM uses a form of reasoning that operates similar to how humans solve problems. It iteratively solves a problem by reasoning through its answers to find a proper solution.
+[Image Description: Model Architecture Diagram]
+A flowchart describing the internal loop of the Tiny Recursive Model (TRM).
+Inputs: Input (x) [Question], Prediction (y) [Answer], Latent (z) [Reasoning].
+Core Loop: The inputs feed into a block containing:
+Add & Norm
+MLP
+Add & Norm
+Self-Attention
+(This block is repeated 4x).
+Flow:
+Step 1, 2, ..., n: Update z given x, y, z (Improve the latent z)
+Step n+1: Update y given y, z (Improve the prediction y)
+Note: "Applied N_sup = 16 times (trying to improve the prediction y)".
+Loss: The output connects to "Reverse Embedding" which leads to "Cross-entropy loss".
+Training:
+We trained our TRM on both 10x10 and 15x15 nonograms using a NVIDIA RTX 4090 GPU rented from Vast.ai.
+
+**10x10 Configuration:**
+For the 10x10 dataset, we used a batch size of 256 and mixed precision (Float16). The training was stable and converged efficiently in approximately 80 minutes (8 epochs).
+
+**15x15 Changes & Debugging:**
+When scaling to 15x15 nonograms, we encountered significant instability (NaN loss) due to the longer sequence lengths (465 tokens) and the recursive nature of the model. To resolve this, we made critical adjustments:
+*   **Reduced Global Batch Size**: Lowered from 768 (Samsung paper) to 64 to fit in GPU memory.
+*   **Precision Switch**: Changed from `bfloat16` to `float32`. We discovered that `bfloat16` lacked the precision for the recursive updates, leading to error accumulation.
+*   **Epsilon Adjustment**: Increased the stability term `epsilon` in the loss function from `1e-30` to `1e-8`. This change was necessary because `1e-30` is below the machine epsilon for `float32`, causing the stability term to underflow to zero and leading to division-by-zero errors in the gradients.
+*   **Gradient Clipping**: Added norm clipping (1.0) to handle noise from the smaller batch size. With the global batch size reduced by 12x (768 to 64), gradient estimates became significantly noisier; clipping was essential to prevent occasional spikes from causing diverging updates.
+
+These changes allowed the model to train stably, reducing loss from 4.0 to ~1.48 and achieving meaningful learning.
+Results:
+
+### 10x10 Nonograms
+The TRM demonstrated exceptional performance on the 10x10 dataset, achieving near-perfect metrics and significantly outperforming the LLM baseline.
+
+*   **Accuracy (Cell-wise)**: 99.8%
+*   **Exact Match (Puzzle Solved)**: 96%
+*   **Inference Speed**: ~2.1 seconds per puzzle (CPU)
+
+In comparison, Gemini 3 Pro (High) achieved an **Exact Match rate of 87%** on a subset of puzzles. Notably, the TRM inference was approximately **50x-70x faster** than the cloud-based LLM inference (which averaged ~97 seconds/puzzle).
+
+### 15x15 Nonograms
+The 15x15 task proved much more challenging due to the exponential increase in the problem space ($2^{225}$ vs $2^{100}$).
+
+*   **TRM Performance**: The model achieved a cell-wise accuracy of ~97.5% and an Exact Match rate of approximately 65% (peaking during training).
+*   **Gemini 3 Pro Performance**: The LLM struggled significantly with the larger grid, achieving an Exact Match rate of only 52%.
+
+Despite the increase in difficulty, the narrowly trained TRM maintained a performance advantage over the generalized frontier model.
+
+Conclusions/Future Work:
+The Tiny Recursive Model proved to be highly effective for discrete, deterministic logic puzzles. Our results demonstrate that a narrowly trained model with only 7 million parameters can outperform a generalized SOTA model with 1.7 trillion parameters on specific reasoning tasks, while being orders of magnitude more efficient.
+
+**Key Insights:**
+1.  **Efficiency**: TRM offers a massive speed and cost advantage for specific tasks.
+2.  **Specialization vs Generalization**: While LLMs are versatile, they struggle with the strict constraints of larger logic puzzles compared to a model designed to "think" recursively about the grid state.
+3.  **Numerical Stability**: Training recursive models requires careful attention to precision (`float32` vs `bfloat16`) and hyperparameter tuning (batch size, epsilon), as errors compound across recursive steps.
+
+**Future Work:**
+We believe the TRM architecture can be extended to other discrete constraint satisfaction problems (CSPs) such as:
+*   Scheduling and timetabling.
+*   Pathfinding and routing (e.g., self-driving car logic).
+*   Mathematical reasoning tasks requiring multi-step verification.

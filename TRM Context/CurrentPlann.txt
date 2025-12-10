@@ -10,7 +10,7 @@
 	    - The published architectures in the Samsung paper
 
 1. prev attempt at training TRM on this dataset failed.  
-([Rank 0, World Size 1]: Epoch 49
+a- ([Rank 0, World Size 1]: Epoch 49
 TRAIN
 EVALUATE
 SWITCH TO EMA
@@ -18,8 +18,17 @@ Skipping evaluation (no eval loader)
 SAVE CHECKPOINT
 0it [05:11, ?it/s]
 keyanmikaili@Keyans-Mac-mini TinyRecursiveModels-main(Samsung Paper Repo) %)
+b- 
+Inference Results (Epoch 1):
 
-2. Use the @10x10 dataset to train a proof of concept TRM model. 
+Prediction: Still predicting all zeros.
+Accuracy: 33.00%.
+It seems the model hasn't broken out of the "safe" zero-prediction strategy yet. This can happen in the early stages, especially if the class imbalance (more zeros than ones, or vice versa) pushes it towards a default value, or if the reasoning depth needs more time to stabilize.
+
+
+
+2. Use the @10x10 dataset to train a new simple proof of concept TRM model. 
+- create in a new folder under TRMProj, create copies of relevant scripts. Do not interfere with or edit the current codebase. 
     - proof of concept means we don't need to get to 100% accuracy, we just need to show that it can learn something; train on a small portion of the entire dataset (10%?)
     - Use the same architecture and methodology as the published Samsung paper
     - Note the format of the @10x10 dataset 
